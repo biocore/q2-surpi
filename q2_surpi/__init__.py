@@ -14,7 +14,7 @@ __long_description__ = ('This QIIME 2 plugin imports SURPI results into '
 __license__ = 'BSD-3-Clause'
 __author__ = 'Amanda Birmingham'
 __email__ = 'abirmingham@ucsd.edu'
-__url__ = 'https://github.com/AmandaBirmingham/q2-surpi'
+__url__ = 'https://github.com/biocore/q2-surpi'
 __citations_fname__ = 'citations.bib'
 
 __all__ = ['extract', 'SurpiCountTable', 'SurpiCountTableFormat',

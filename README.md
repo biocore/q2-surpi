@@ -14,7 +14,7 @@ the plugin, first activate the QIIME 2 environment and then install the
 plugin repository from github:
 
 ```
-pip install git+https://github.com/AmandaBirmingham/q2-surpi.git
+pip install git+https://github.com/biocore/q2-surpi.git
 ```
 
 After this, it is necessary to refresh the QIIME 2 plugin cache:
