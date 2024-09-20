@@ -1,0 +1,17 @@
+species	genus	family	tag	AACCCGCC+GAGGATTT	AATCGTCA+AGTTAAAG	ACTATGAT+TTCGATAG	AGTACAAG+CCCATTGC	AGTAGTAA+TACTGATA	AGTCCCGG+GCAGAAGT	AGTCTGCT+TCCAGGCT	AGTGCGGA+CCGTTGTC	CATCTACT+TTCCGTTG	CATTCGGA+GATGGAAA
+Dill cryptic virus 1		Partitiviridae	host-apicomplexans|fungi|plants;	0	0	0	0	0	0	0	0	0	0
+Escherichia phage FEC14	Cba120virus	Ackermannviridae	host-bacteria;	0	0	0	0	0	0	0	0	0	0
+Dickeya phage phiDP10.3	Limestonevirus	Ackermannviridae	host-bacteria;	1	0	0	0	5	0	0	0	0	0
+Dickeya phage phiDP23.1	Limestonevirus	Ackermannviridae	host-bacteria;	1	0	0	0	1	0	0	0	0	0
+Salmonella virus SJ2	Vi1virus	Ackermannviridae	host-bacteria;	0	0	0	0	0	0	1	0	0	0
+Klebsiella phage May		Ackermannviridae	host-bacteria;	0	0	1	1	0	0	1	0	0	0
+Escherichia virus FI	Allolevivirus	Leviviridae	host-bacteria;	0	0	0	0	1	0	0	0	0	0
+Escherichia virus Qbeta	Allolevivirus	Leviviridae	host-bacteria;	1	0	0	0	5	3	0	0	0	1
+Enterobacteria phage C-1 INW-2012	Levivirus	Leviviridae	host-bacteria;	0	0	0	0	0	0	0	0	0	0
+Enterobacteria phage Hgal1	Levivirus	Leviviridae	host-bacteria;	0	0	0	0	1	1	0	0	0	0
+Escherichia virus BZ13	Levivirus	Leviviridae	host-bacteria;	2	8	0	0	10	6	0	0	0	3
+Escherichia virus MS2	Levivirus	Leviviridae	host-bacteria;	0	0	0	0	1	0	0	0	1	0
+Acinetobacter phage AP205		Leviviridae	host-bacteria;	7	3	0	0	10	3	0	0	11	0
+Pseudomonas phage PP7		Leviviridae	host-bacteria;	0	0	0	0	4	0	0	0	0	0
+Pseudomonas phage PRR1		Leviviridae	host-bacteria;	2	0	0	0	3	0	0	0	1	0
+*		Microviridae	host-bacteria;	0	0	0	0	0	0	0	0	0	0
