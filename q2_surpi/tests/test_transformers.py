@@ -65,34 +65,34 @@ class TestSurpiSampleSheetFormatTransformers(TestPluginBase):
     package = f'{__package_name__}.tests'
 
     def test_surpisamplesheetformat_to_dataframe(self):
-        input_fname = "surpi_sample_info.txt"
+        input_fname = "surpi_sample_info.csv"
 
         expected_dict = {
             SAMPLE_NAME_KEY: [
-                "sample_1", "sample_2", "sample_3", "sample_4", "sample_5",
-                "sample_6", "sample_7", "sample_8", "sample_9", "sample_10",
-                "sample_11", "sample_12", "sample_13", "sample_14",
-                "sample_15", "sample_16", "sample_17", "sample_18",
-                "sample_19", "sample_20", "sample_21", "sample_22",
-                "sample_23", "sample_24", "sample_25", "sample_26",
-                "sample_27", "sample_28", "sample_29", "sample_30",
-                "sample_31", "sample_32"],
-            BARCODE_KEY: ["AACCCGCC+GAGGATTT", "AATCGTCA+AGTTAAAG",
-                          "ACTATGAT+TTCGATAG", "AGTACAAG+CCCATTGC",
-                          "AGTAGTAA+TACTGATA", "AGTCCCGG+GCAGAAGT",
-                          "AGTCTGCT+TCCAGGCT", "AGTGCGGA+CCGTTGTC",
-                          "CATCTACT+TTCCGTTG", "CATTCGGA+GATGGAAA",
-                          "CCCTATCT+GTTAGTGA", "CCCTTCGG+GAAGGCAG",
-                          "CCGATCGT+GACTGTTT", "CCGGAATT+GCATACTT",
-                          "CCGGATAG+GACTCAAA", "CCGTAAGC+AGTGAGGT",
-                          "CCGTAGAA+TGCGCTTA", "CGAACGTG+CATCTGTA",
-                          "CGCGAAAG+AAAGGAGG", "CGTTGTCC+CTTATCGA",
-                          "CTACATGA+GATTTGAT", "GCCGAATC+CTGTCCTC",
-                          "GCTGATTT+ATAGAGGC", "GCTTCACA+TAAAGCTA",
-                          "TACTAAGG+CTGACTCG", "TACTGTGA+GTGTCCAG",
-                          "TCCTGGAC+CTGCTTAA", "TCGCTCGG+CCATCGGA",
-                          "TGGAACGG+GAATAAAG", "TGTCCAAA+TTGGTTGT",
-                          "TTCGTGGA+ACAAGGTA", "TTGCCACT+GGGAACTG"],
+                "sample-R-A1", "sample-R-B1", "sample-R-C1", "sample-R-D1",
+                "sample-R-E1", "sample-R-F1", "sample-R-G1", "sample-R-H1",
+                "sample-R-A2", "sample-R-B2", "sample-R-C2", "sample-R-D2",
+                "sample-R-E2", "sample-R-F2", "sample-R-G2", "sample-R-H2",
+                "sample-D-A1", "sample-D-B1", "sample-D-C1", "sample-D-D1",
+                "sample-D-E1", "sample-D-F1", "sample-D-G1", "sample-D-H1",
+                "sample-D-A2", "sample-D-B2", "sample-D-C2", "sample-D-D2",
+                "sample-D-E2", "sample-D-F2", "sample-D-G2", "sample-D-H2"],
+            BARCODE_KEY: ["AGTAGTAA+TACTGATA", "TACTAAGG+CTGACTCG",
+                          "CATTCGGA+GATGGAAA", "AATCGTCA+AGTTAAAG",
+                          "GCTGATTT+ATAGAGGC", "CGCGAAAG+AAAGGAGG",
+                          "TTGCCACT+GGGAACTG", "TTCGTGGA+ACAAGGTA",
+                          "AGTCCCGG+GCAGAAGT", "TCCTGGAC+CTGCTTAA",
+                          "CTACATGA+GATTTGAT", "CCGGATAG+GACTCAAA",
+                          "AACCCGCC+GAGGATTT", "CGAACGTG+CATCTGTA",
+                          "CCGTAGAA+TGCGCTTA", "CATCTACT+TTCCGTTG",
+                          "AGTCTGCT+TCCAGGCT", "GCCGAATC+CTGTCCTC",
+                          "ACTATGAT+TTCGATAG", "CCCTATCT+GTTAGTGA",
+                          "CGTTGTCC+CTTATCGA", "TGGAACGG+GAATAAAG",
+                          "CCCTTCGG+GAAGGCAG", "TGTCCAAA+TTGGTTGT",
+                          "AGTACAAG+CCCATTGC", "TACTGTGA+GTGTCCAG",
+                          "CCGGAATT+GCATACTT", "TCGCTCGG+CCATCGGA",
+                          "AGTGCGGA+CCGTTGTC", "GCTTCACA+TAAAGCTA",
+                          "CCGATCGT+GACTGTTT", "CCGTAAGC+AGTGAGGT"],
         }
 
         expected_df = pandas.DataFrame(expected_dict)
@@ -101,4 +101,7 @@ class TestSurpiSampleSheetFormatTransformers(TestPluginBase):
             SurpiSampleSheetFormat, pandas.DataFrame,
             filename=input_fname)
 
-        assert_frame_equal(obs_df, expected_df)
+        # the only parts of the sample sheet that are used are the sample name
+        # and the barcode, so we only compare those columns
+        partial_obs_df = obs_df[[SAMPLE_NAME_KEY, BARCODE_KEY]]
+        assert_frame_equal(partial_obs_df, expected_df)

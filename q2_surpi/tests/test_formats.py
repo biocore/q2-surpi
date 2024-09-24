@@ -33,7 +33,7 @@ class TestSurpiSampleSheetFormat(TestPluginBase):
     package = f'{__package_name__}.tests'
 
     def test_surpisamplesheet_format_valid(self):
-        filenames = ['surpi_sample_info.txt']
+        filenames = ['surpi_sample_info.csv']
         filepaths = [self.get_data_path(filename)
                      for filename in filenames]
 
@@ -43,12 +43,12 @@ class TestSurpiSampleSheetFormat(TestPluginBase):
 
     def test_surpisamplesheet_format_invalid(self):
         filenames = [
-            # empty
-            'surpi_sample_info_empty.txt',
-            # missing column "sample"
-            'surpi_sample_info_missing_sample.txt',
-            # missing column "barcode"
-            'surpi_sample_info_missing_barcode.txt'
+            # empty data section
+            'surpi_sample_info_empty_data.csv',
+            # missing column "Sample_Name"
+            'surpi_sample_info_missing_sample.csv',
+            # missing column "index"
+            'surpi_sample_info_missing_index.csv'
         ]
         filepaths = [self.get_data_path(filename)
                      for filename in filenames]

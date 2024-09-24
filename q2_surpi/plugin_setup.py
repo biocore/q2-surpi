@@ -5,7 +5,8 @@ from qiime2.plugin import (Plugin, Citations)
 import q2_surpi
 from q2_surpi._formats_and_types import (
     SurpiCountTable, SurpiCountTableFormat, SurpiCountTableDirectoryFormat,
-    SurpiSampleSheet, SurpiSampleSheetFormat, SurpiSampleSheetDirectoryFormat)
+    SurpiSampleSheet, SurpiSampleSheetFormat, SurpiSampleSheetDirectoryFormat,
+    surpi_count_fp_to_df)
 
 
 plugin = Plugin(
@@ -41,7 +42,7 @@ def _1(ff: SurpiCountTableFormat) -> pandas.DataFrame:
 @plugin.register_transformer
 # load a SurpiSampleSheetFormat into a dataframe
 def _2(ff: SurpiSampleSheetFormat) -> pandas.DataFrame:
-    result = pandas.read_csv(str(ff), sep='\t', header=0)
+    result = surpi_count_fp_to_df(str(ff))
     return result
 
 
