@@ -1,6 +1,7 @@
 import pandas
 from q2_surpi._formats_and_types import FEATURE_ID_KEY, FAMILY_KEY, \
-    GENUS_KEY, SPECIES_KEY, BARCODE_KEY, TAG_KEY, SAMPLE_NAME_KEY
+    GENUS_KEY, SPECIES_KEY, BARCODE_KEY, TAG_KEY, SAMPLE_NAME_KEY, \
+    SS_SAMPLE_ID_KEY
 
 SAMPLE_ID_KEY = 'sample-id'
 TAXON_KEY = 'Taxon'
@@ -15,7 +16,8 @@ FEATURE_KEY = 'Feature ID'
 # automagically and this will receive pandas.DataFrames as its arguments.
 def extract(
         surpi_output: pandas.DataFrame,
-        surpi_sample_info: pandas.DataFrame) -> \
+        surpi_sample_info: pandas.DataFrame,
+        ids_are_barcodes: bool = True) -> \
         (pandas.DataFrame, pandas.DataFrame):
 
     """Turn SURPI data into a feature table dataframe and a taxonomy dataframe.
@@ -26,6 +28,9 @@ def extract(
         A DataFrame containing the content of a SURPI counttable [sic] file.
     surpi_sample_info_df : pandas.DataFrame
         A DataFrame containing the content of a SURPI sample sheet file.
+    ids_are_barcodes : bool, optional
+        True if the sample ids are barcodes. False if the sample ids are
+        sample sheet sample ids. Default is True.
 
     Returns
     -------
@@ -36,6 +41,8 @@ def extract(
         A DataFrame linking the original surpi taxon-based feature ids to
         the QIIME 2 taxonomy format.
     """
+
+    ss_sample_id_key = BARCODE_KEY if ids_are_barcodes else SS_SAMPLE_ID_KEY
 
     # Generate the taxonomy result
     taxonomy = surpi_output[[SPECIES_KEY, GENUS_KEY, FAMILY_KEY]].copy()
@@ -56,26 +63,24 @@ def extract(
     surpi_feature_table_df[FEATURE_ID_KEY] = taxonomy.index
     surpi_feature_table_df = surpi_feature_table_df.set_index(FEATURE_ID_KEY)
     surpi_feature_table_df = surpi_feature_table_df.T
-    surpi_feature_table_df.index.name = BARCODE_KEY
+    surpi_feature_table_df.index.name = ss_sample_id_key
     surpi_feature_table_df = surpi_feature_table_df.reset_index()
-    feature_barcodes = surpi_feature_table_df[BARCODE_KEY].unique()
+    feature_barcodes = surpi_feature_table_df[ss_sample_id_key].unique()
 
     # merge the sample info with the feature table
-    # TODO: this is speculative code and may need to be adjusted; I don't
-    #  know yet what the sample info looks like
     limited_sample_info_df = \
-        surpi_sample_info[[BARCODE_KEY, SAMPLE_NAME_KEY]]
+        surpi_sample_info[[ss_sample_id_key, SAMPLE_NAME_KEY]]
     surpi_feature_table_df = surpi_feature_table_df.merge(
-        limited_sample_info_df, on=BARCODE_KEY, how='inner',
+        limited_sample_info_df, on=ss_sample_id_key, how='inner',
         validate='one_to_one')
-    identified_barcodes = surpi_feature_table_df[BARCODE_KEY].unique()
+    identified_barcodes = surpi_feature_table_df[ss_sample_id_key].unique()
     unidentified_barcodes = set(feature_barcodes) - set(identified_barcodes)
     if len(unidentified_barcodes) > 0:
         raise ValueError(
             f"The following barcodes were not linked to sample identifiers "
             f"in the sample sheet: {unidentified_barcodes}")
 
-    surpi_feature_table_df.drop(columns=[BARCODE_KEY], inplace=True)
+    surpi_feature_table_df.drop(columns=[ss_sample_id_key], inplace=True)
     surpi_feature_table_df.set_index(SAMPLE_NAME_KEY, inplace=True)
     surpi_feature_table_df.index.name = SAMPLE_ID_KEY
 

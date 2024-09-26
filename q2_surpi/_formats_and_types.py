@@ -9,6 +9,7 @@ GENUS_KEY = "genus"
 FAMILY_KEY = "family"
 TAG_KEY = "tag"
 SAMPLE_NAME_KEY = 'Sample_Name'
+SS_SAMPLE_ID_KEY = "Sample_ID"
 INDEX_1_KEY = "index"
 INDEX_2_KEY = "index2"
 BARCODE_KEY = 'barcode'
@@ -46,10 +47,10 @@ class SurpiSampleSheetFormat(model.TextFileFormat):
     """Represents a csv-delimited sample sheet file used by SURPI+."""
 
     def _validate_(self, level):
-        _ = surpi_count_fp_to_df(self.path)
+        _ = surpi_sample_sheet_fp_to_df(self.path)
 
 
-def surpi_count_fp_to_df(fp: str) -> pandas.DataFrame:
+def surpi_sample_sheet_fp_to_df(fp: str) -> pandas.DataFrame:
     # open the file and count each line until we find one that starts with
     # [Data]
 
@@ -62,8 +63,14 @@ def surpi_count_fp_to_df(fp: str) -> pandas.DataFrame:
                 continue
             # endif line.startswith("[Data]")
 
-            if is_data and not line.startswith(','):
-                data_table_lines.append(line)
+            if is_data:
+                if line.startswith("["):
+                    # if we've reached the beginning of the next section, stop
+                    break
+
+                if not line.startswith(','):
+                    # add non-empty lines to the data table
+                    data_table_lines.append(line)
             # endif is_data and not line.startswith(',')
         # endfor line in f
     # endwith self.path.open("r") as f

@@ -1,12 +1,12 @@
 import pandas
 from q2_types.feature_table import FeatureTable, Frequency
 from q2_types.feature_data import FeatureData, Taxonomy
-from qiime2.plugin import (Plugin, Citations)
+from qiime2.plugin import (Plugin, Citations, Bool)
 import q2_surpi
 from q2_surpi._formats_and_types import (
     SurpiCountTable, SurpiCountTableFormat, SurpiCountTableDirectoryFormat,
     SurpiSampleSheet, SurpiSampleSheetFormat, SurpiSampleSheetDirectoryFormat,
-    surpi_count_fp_to_df)
+    surpi_sample_sheet_fp_to_df)
 
 
 plugin = Plugin(
@@ -42,7 +42,7 @@ def _1(ff: SurpiCountTableFormat) -> pandas.DataFrame:
 @plugin.register_transformer
 # load a SurpiSampleSheetFormat into a dataframe
 def _2(ff: SurpiSampleSheetFormat) -> pandas.DataFrame:
-    result = surpi_count_fp_to_df(str(ff))
+    result = surpi_sample_sheet_fp_to_df(str(ff))
     return result
 
 
@@ -70,7 +70,11 @@ plugin.methods.register_function(
     input_descriptions={
         'surpi_output': "SURPI counts per species per barcode.",
         'surpi_sample_info': 'Info linking sample ids to barcodes.'},
-    parameters={},
+    parameters={'ids_are_barcodes': Bool},
+    parameter_descriptions={
+        'ids_are_barcodes': ("True if the sample ids in the count tables are "
+                             "barcodes. False if they are the sample sheet's "
+                             "sample ids. Default is True.")},
     outputs=[('table', FeatureTable[Frequency]),
              ('taxonomy', FeatureData[Taxonomy])],
     output_descriptions={
